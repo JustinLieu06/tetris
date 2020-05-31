@@ -50,4 +50,8 @@ const player = {
   matrix: matrix,
 }
 
+document.addEventListener('keydown', event => {
+  console.log(event);
+});
+
 update();
