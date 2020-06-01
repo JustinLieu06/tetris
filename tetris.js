@@ -35,6 +35,18 @@ function drawMatrix(matrix, offset) {
   });
 }
 
+function collide(arena, player){
+  const [m, offset] = [player.matrix, player.pos];
+  for (let y = 0; y < m.length; ++y){
+    for (let x = 0; x < m[y].length; ++x){
+      if (m[y][x] !== 0 && arena[y + offset.y] && arena[y + offset.y][x + o.x] !== 0){
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
 function merge(arena, player){
   player.matrix.forEach((row, y) => {
     row.forEach((value, x) => {
