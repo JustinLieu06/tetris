@@ -80,7 +80,17 @@ function playerMove(dir){
 }
 
 function playerRotate(dir){
+  let offset = player.pos.x;
   rotate(player.matrix, dir);
+  while(collide(arena, player)){
+    player.pos.x += offset;
+    offset = -(offset + (offset > 0 ? 1 : -1));
+    if (offset > player.matrix[0].length){
+      rotate(player.matrix, - dir);
+        player.pos.x = pos;
+        return;
+    }
+  }
 }
 
 function rotate(matrix, dir){
@@ -142,7 +152,7 @@ document.addEventListener('keydown', event => {
   else if (event.keyCode === 81){
     playerRotate(-1);
   }
-  else if (event.keyCode === 69){
+  else if (event.keyCode === 69 || event.keyCode === 87){
     playerRotate(1);
   }
 });
