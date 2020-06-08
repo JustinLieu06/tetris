@@ -69,10 +69,10 @@ function createPiece(type){
     ];
   } else if (type === 'I'){
     return [
-      [0, 5, 0],
-      [0, 5, 0],
-      [0, 5, 0],
-      [0, 5, 0],
+      [0, 5, 0, 0],
+      [0, 5, 0, 0],
+      [0, 5, 0, 0],
+      [0, 5, 0, 0],
     ];
   } else if (type === 'S'){
     return [
@@ -118,16 +118,27 @@ function merge(arena, player){
   });
 }
 
+function pieceLands(){
+  player.pos.y--;
+  merge(arena, player);
+  playerReset();
+  arenaSweep();
+  updateScore();
+}
+
 function playerDrop(){
   player.pos.y++;
   if (collide(arena, player)){
-    console.log('collide');
-    player.pos.y--;
-    merge(arena, player);
-    playerReset();
-    arenaSweep();
-    updateScore();
+    pieceLands();
   }
+  dropCounter = 0;
+}
+
+function playerHardDrop(){
+  while (!collide(arena, player)){
+    player.pos.y++;
+  }
+  pieceLands();
   dropCounter = 0;
 }
 
@@ -208,14 +219,14 @@ function updateScore(){
 
 const colors = [
   null,
-  '#FF0D72',
-  '#0Dc2FF',
-  '#0DFF72',
-  '#F538FF',
-  '#FF8E0D',
-  '#FFE138',
-  '#3877FF'
-]
+  'purple',
+  'yellow',
+  'orange',
+  'blue',
+  'aqua',
+  'green',
+  'red'
+];
 
 const arena = createMatrix(12, 20);
 console.table(arena);
@@ -228,20 +239,23 @@ const player = {
 
 document.addEventListener('keydown', event => {
   // console.log(event);
-  if (event.keyCode === 37){
+  if (event.keyCode === 37){ //left arrow
     playerMove(-1);
   }
-  else if (event.keyCode === 39){
+  else if (event.keyCode === 39){ //right arrow
     playerMove(1);
   }
-  else if (event.keyCode === 40){
+  else if (event.keyCode === 40){ //down arrow
     playerDrop();
   }
-  else if (event.keyCode === 81){
+  else if (event.keyCode === 81){ //q
     playerRotate(-1);
   }
-  else if (event.keyCode === 69 || event.keyCode === 87){
+  else if (event.keyCode === 69 || event.keyCode === 87 || event.keyCode === 38){ //w, e, up arrow
     playerRotate(1);
+  }
+  else if (event.keyCode === 32){ //space
+    playerHardDrop();
   }
 });
 
